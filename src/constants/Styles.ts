@@ -2,9 +2,13 @@ import { StyleSheet } from "react-native";
 import Colors from "@/constants/Colors";
 
 export const defaultStyles = StyleSheet.create({
+  appContainer: {
+    flex: 1,
+    backgroundColor: "#000",
+  },
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.background,
     padding: 16,
   },
   header: {
@@ -19,14 +23,14 @@ export const defaultStyles = StyleSheet.create({
     alignItems: "center",
   },
   textLink: {
-    color: Colors.light.text,
+    color: Colors.text,
     fontSize: 18,
     fontWeight: "500",
   },
   descriptionText: {
     fontSize: 18,
     marginTop: 20,
-    color: Colors.light.gray,
+    color: Colors.gray,
   },
   buttonText: {
     color: "#fff",

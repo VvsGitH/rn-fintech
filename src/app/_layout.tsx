@@ -1,10 +1,13 @@
+import Colors from "@/constants/Colors";
+import { defaultStyles } from "@/constants/Styles";
+import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
 import { preventAutoHideAsync, hideAsync } from "expo-splash-screen";
 import { useEffect } from "react";
-import { useColorScheme } from "react-native";
+import { Pressable, View, useColorScheme } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -20,6 +23,8 @@ export const unstable_settings = {
 void preventAutoHideAsync();
 
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
+
   const [loaded, error] = useFonts({
     SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf") as string,
     ...FontAwesome.font,
@@ -36,18 +41,39 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  return loaded ? <RootLayoutNav /> : null;
+  return (
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <View style={defaultStyles.appContainer}>{loaded && <RootLayoutNav />}</View>
+    </ThemeProvider>
+  );
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="login" />
-      </Stack>
-    </ThemeProvider>
+    <Stack>
+      <Stack.Screen
+        name="index"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="signup"
+        options={{
+          title: "",
+          headerBackTitle: "Back to home",
+          headerStyle: { backgroundColor: Colors.background },
+          headerShadowVisible: false,
+          headerLeft: () => (
+            <Link href=".." asChild>
+              <Pressable>
+                <Ionicons name="arrow-back" size={34} color={Colors.dark} />
+              </Pressable>
+            </Link>
+          ),
+        }}
+      />
+      <Stack.Screen name="login" />
+    </Stack>
   );
 }

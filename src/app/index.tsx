@@ -1,6 +1,9 @@
+import Colors from "@/constants/Colors";
+import { defaultStyles } from "@/constants/Styles";
 import { useAssets } from "expo-asset";
 import { ResizeMode, Video } from "expo-av";
 import { Link } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -14,6 +17,8 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.mainContainer}>
+      <StatusBar style="light" />
+
       {videoUri && (
         <Video
           source={{ uri: videoUri }}
@@ -26,13 +31,18 @@ export default function HomeScreen() {
       )}
 
       <View style={styles.header}>
-        <Text style={styles.headerText}>Welcome to the app!</Text>
+        <Text style={styles.headerText}>Ready to change the way you money?</Text>
       </View>
 
       <View style={styles.buttons}>
-        <Link href="/login" asChild>
+        <Link href="/login" style={[defaultStyles.pillButton, styles.loginButton]} asChild>
           <Pressable>
-            <Text style={styles.buttonText}>Log in</Text>
+            <Text style={styles.loginButtonText}>Log in</Text>
+          </Pressable>
+        </Link>
+        <Link href="/signup" style={[defaultStyles.pillButton, styles.signUpButton]} asChild>
+          <Pressable>
+            <Text style={styles.signUpButtonText}>Sign Up</Text>
           </Pressable>
         </Link>
       </View>
@@ -44,7 +54,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     justifyContent: "space-between",
-    backgroundColor: "#000",
   },
   videoContainer: {
     width: "100%",
@@ -66,8 +75,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 20,
     marginBottom: 20,
+    paddingHorizontal: 15,
   },
-  buttonText: {
+  loginButton: {
+    flex: 1,
+    backgroundColor: Colors.dark,
+  },
+  loginButtonText: {
     color: "#fff",
+    fontSize: 22,
+    fontWeight: "500",
+  },
+  signUpButton: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
+  signUpButtonText: {
+    color: Colors.dark,
+    fontSize: 22,
+    fontWeight: "500",
   },
 });
