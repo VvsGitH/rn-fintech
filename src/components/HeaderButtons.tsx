@@ -13,12 +13,22 @@ export function HeaderBackBtn() {
   );
 }
 
-export function HeaderHelpBtn() {
+export function HeaderCloseBtn() {
   return (
-    <Link href="/help" asChild>
+    <Link href=".." asChild>
       <Pressable>
-        <Ionicons name="help-circle-outline" size={34} color={Colors.dark} />
+        <Ionicons name="close-outline" size={34} color={Colors.dark} />
       </Pressable>
     </Link>
   );
 }
+
+// export function HeaderHelpBtn() {
+//   return (
+//     <Link href="/help" asChild>
+//       <Pressable>
+//         <Ionicons name="help-circle-outline" size={34} color={Colors.dark} />
+//       </Pressable>
+//     </Link>
+//   );
+// }
