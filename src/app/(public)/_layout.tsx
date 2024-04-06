@@ -1,4 +1,4 @@
-import { HeaderBackBtn, HeaderHelpBtn } from "@/components/HeaderButtons";
+import { HeaderBackBtn } from "@/components/HeaderButtons";
 import Colors from "@/constants/Colors";
 import { useAuthStore } from "@/store/AuthStore";
 import { Redirect, Stack } from "expo-router";
@@ -29,14 +29,6 @@ export default function PublicLayout() {
           headerStyle: { backgroundColor: Colors.background },
           headerShadowVisible: false,
           headerLeft: () => <HeaderBackBtn />,
-          headerRight: () => <HeaderHelpBtn />,
-        }}
-      />
-      <Stack.Screen
-        name="help"
-        options={{
-          title: "Help",
-          presentation: "modal",
         }}
       />
     </Stack>
