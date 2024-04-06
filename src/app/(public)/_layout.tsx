@@ -1,6 +1,6 @@
 import { HeaderBackBtn, HeaderHelpBtn } from "@/components/HeaderButtons";
 import Colors from "@/constants/Colors";
-import useAuthStore from "@/store/AuthStore";
+import { useAuthStore } from "@/store/AuthStore";
 import { Redirect, Stack } from "expo-router";
 
 export default function PublicLayout() {

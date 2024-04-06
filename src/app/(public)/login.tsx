@@ -1,19 +1,41 @@
 import Divider from "@/components/Divider";
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
+import { useAuthStoreShallow as useAuthStore } from "@/store/AuthStore";
 import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { Text, View, StyleSheet, TextInput, Pressable, KeyboardAvoidingView, Platform } from "react-native";
+import { Text, View, StyleSheet, TextInput, Pressable, KeyboardAvoidingView, Platform, Alert } from "react-native";
 
 export default function LoginScreen() {
+  const signIn = useAuthStore((s) => ({
+    byPhone: s.signInByPhone,
+    byGoogle: s.signInByGoogle,
+    byApple: s.signInByApple,
+  }));
+
   const [countryCode, setCountryCode] = useState("+39");
   const [phoneNum, setPhoneNum] = useState("");
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 80 : 0;
 
-  const onLogin = (authType: "phone" | "mail" | "google" | "apple") => {
-    console.log(authType);
+  const onLogin = async (authType: "phone" | "google" | "apple") => {
+    try {
+      switch (authType) {
+        case "phone":
+          await signIn.byPhone(`${countryCode}${phoneNum}`);
+          break;
+        case "google":
+          await signIn.byGoogle();
+          break;
+        case "apple":
+          await signIn.byApple();
+          break;
+      }
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error!", "There was an error during sign-up");
+    }
   };
 
   return (
@@ -50,10 +72,6 @@ export default function LoginScreen() {
 
         <Divider text="or" />
 
-        <Pressable style={styles.alternativeSignBtn} onPress={() => onLogin("mail")}>
-          <Ionicons name="mail" size={24} color="#000" />
-          <Text style={styles.alternativeSignBtnText}>Continue with email</Text>
-        </Pressable>
         <Pressable style={styles.alternativeSignBtn} onPress={() => onLogin("google")}>
           <Ionicons name="logo-google" size={24} color="#000" />
           <Text style={styles.alternativeSignBtnText}>Continue with Google</Text>

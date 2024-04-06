@@ -1,6 +1,6 @@
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
-import useAuthStore from "@/store/AuthStore";
+import { useAuthStore } from "@/store/AuthStore";
 import { Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
@@ -18,8 +18,9 @@ export default function SignUpScreen() {
     const fullPhoneNum = `${countryCode}${phoneNum}`;
     try {
       await signUp(fullPhoneNum);
-    } catch (error) {
-      Alert.alert("Error!", "There was an error during sign-up", undefined);
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error!", "There was an error during sign-up");
     }
   };
 
