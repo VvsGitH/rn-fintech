@@ -1,18 +1,26 @@
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
+import useAuthStore from "@/store/AuthStore";
 import { Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { Text, View, StyleSheet, TextInput, Pressable, KeyboardAvoidingView, Platform } from "react-native";
+import { Text, View, StyleSheet, TextInput, Pressable, KeyboardAvoidingView, Platform, Alert } from "react-native";
 
 export default function SignUpScreen() {
+  const signUp = useAuthStore((s) => s.signUp);
+
   const [countryCode, setCountryCode] = useState("+39");
   const [phoneNum, setPhoneNum] = useState("");
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 80 : 0;
 
   const onSignup = async () => {
-    // TODO
+    const fullPhoneNum = `${countryCode}${phoneNum}`;
+    try {
+      await signUp(fullPhoneNum);
+    } catch (error) {
+      Alert.alert("Error!", "There was an error during sign-up", undefined);
+    }
   };
 
   return (

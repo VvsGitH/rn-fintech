@@ -1,5 +1,6 @@
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
+import useAuthStore from "@/store/AuthStore";
 import { useAssets } from "expo-asset";
 import { ResizeMode, Video } from "expo-av";
 import { Link } from "expo-router";
@@ -10,6 +11,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 export default function HomeScreen() {
   const [assets, error] = useAssets([require("@/assets/videos/intro.mp4")]);
   const videoUri = assets?.[0]?.uri;
+
+  const authenticated = useAuthStore((s) => s.authenticated);
 
   useEffect(() => {
     if (error) throw error;
@@ -35,16 +38,26 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.buttons}>
-        <Link href="/login" style={[defaultStyles.pillButton, styles.loginButton]} asChild>
-          <Pressable>
-            <Text style={styles.loginButtonText}>Log in</Text>
-          </Pressable>
-        </Link>
-        <Link href="/signup" style={[defaultStyles.pillButton, styles.signUpButton]} asChild>
-          <Pressable>
-            <Text style={styles.signUpButtonText}>Sign Up</Text>
-          </Pressable>
-        </Link>
+        {!authenticated ? (
+          <>
+            <Link href="/login" style={[defaultStyles.pillButton, styles.loginButton]} asChild>
+              <Pressable>
+                <Text style={styles.loginButtonText}>Log in</Text>
+              </Pressable>
+            </Link>
+            <Link href="/signup" style={[defaultStyles.pillButton, styles.signUpButton]} asChild>
+              <Pressable>
+                <Text style={styles.signUpButtonText}>Sign Up</Text>
+              </Pressable>
+            </Link>
+          </>
+        ) : (
+          <Link href="/dashboard" style={[defaultStyles.pillButton, styles.loginButton]} asChild>
+            <Pressable>
+              <Text style={styles.loginButtonText}>Continue</Text>
+            </Pressable>
+          </Link>
+        )}
       </View>
     </View>
   );

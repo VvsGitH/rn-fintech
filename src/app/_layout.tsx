@@ -1,13 +1,11 @@
-import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
-import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Link, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { preventAutoHideAsync, hideAsync } from "expo-splash-screen";
 import { useEffect } from "react";
-import { Pressable, View, useColorScheme } from "react-native";
+import { View, useColorScheme } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -58,53 +56,17 @@ function RootLayoutNav() {
         }}
       />
       <Stack.Screen
-        name="signup"
+        name="(public)"
         options={{
-          title: "",
-          headerBackTitle: "Back to home",
-          headerStyle: { backgroundColor: Colors.background },
-          headerShadowVisible: false,
-          headerLeft: () => <HeaderBackBtn />,
+          headerShown: false,
         }}
       />
       <Stack.Screen
-        name="login"
+        name="(private)"
         options={{
-          title: "",
-          headerBackTitle: "Back to home",
-          headerStyle: { backgroundColor: Colors.background },
-          headerShadowVisible: false,
-          headerLeft: () => <HeaderBackBtn />,
-          headerRight: () => <HeaderHelpBtn />,
-        }}
-      />
-      <Stack.Screen
-        name="help"
-        options={{
-          title: "Help",
-          presentation: "modal",
+          headerShown: false,
         }}
       />
     </Stack>
-  );
-}
-
-function HeaderBackBtn() {
-  return (
-    <Link href=".." asChild>
-      <Pressable>
-        <Ionicons name="arrow-back" size={34} color={Colors.dark} />
-      </Pressable>
-    </Link>
-  );
-}
-
-function HeaderHelpBtn() {
-  return (
-    <Link href="/help" asChild>
-      <Pressable>
-        <Ionicons name="help-circle-outline" size={34} color={Colors.dark} />
-      </Pressable>
-    </Link>
   );
 }
