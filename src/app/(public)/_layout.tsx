@@ -1,8 +1,7 @@
+import { HeaderBackBtn, HeaderHelpBtn } from "@/components/HeaderButtons";
 import Colors from "@/constants/Colors";
 import useAuthStore from "@/store/AuthStore";
-import { Ionicons } from "@expo/vector-icons";
-import { Link, Redirect, Stack } from "expo-router";
-import { Pressable } from "react-native";
+import { Redirect, Stack } from "expo-router";
 
 export default function PublicLayout() {
   const authenticated = useAuthStore((s) => s.authenticated);
@@ -41,25 +40,5 @@ export default function PublicLayout() {
         }}
       />
     </Stack>
-  );
-}
-
-function HeaderBackBtn() {
-  return (
-    <Link href=".." asChild>
-      <Pressable>
-        <Ionicons name="arrow-back" size={34} color={Colors.dark} />
-      </Pressable>
-    </Link>
-  );
-}
-
-function HeaderHelpBtn() {
-  return (
-    <Link href="/help" asChild>
-      <Pressable>
-        <Ionicons name="help-circle-outline" size={34} color={Colors.dark} />
-      </Pressable>
-    </Link>
   );
 }
