@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     justifyContent: "space-between",
+    backgroundColor: "#000",
   },
   videoContainer: {
     width: "100%",

@@ -27,9 +27,8 @@ export default function VerifyPhoneScreen() {
   return (
     <View style={defaultStyles.container}>
       <Text style={defaultStyles.header}>6-digit code</Text>
-      <Text style={defaultStyles.descriptionText}>
-        We have sent a verification code to your phone number: {phone}. Please, insert the code down here.
-      </Text>
+      <Text style={defaultStyles.descriptionText}>We have sent a verification code to your phone number: {phone}.</Text>
+      <Text style={defaultStyles.descriptionText}>Please, insert the code you received down here:</Text>
 
       <CodeField
         {...props}

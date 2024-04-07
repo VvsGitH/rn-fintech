@@ -31,7 +31,7 @@ export default function SignUpScreen() {
       <View style={defaultStyles.container}>
         <Text style={defaultStyles.header}>{"Let's get started!"}</Text>
         <Text style={defaultStyles.descriptionText}>
-          Enter yout phone number. We will send you a confirmation code there.
+          Enter your phone number. We will send you a confirmation code there.
         </Text>
         <View style={styles.inputContainer}>
           <TextInput
