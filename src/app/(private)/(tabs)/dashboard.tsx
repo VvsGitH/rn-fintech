@@ -35,7 +35,7 @@ export default function DashboardPage() {
       <View style={styles.actionRow}>
         <RoundBtn icon="add" text="Add money" onPress={onAddMoney} />
         <RoundBtn icon="refresh" text="Exchange" onPress={onExchange} />
-        <RoundBtn icon="list" text="Details" onPress={onAddMoney} />
+        <RoundBtn icon="list" text="Details" />
         <Dropdown
           items={[
             {
