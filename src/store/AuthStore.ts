@@ -1,6 +1,8 @@
 import { router } from "expo-router";
-import { create } from "zustand";
+import { StateCreator, create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { ZustandSecureStorage } from "./storage-middleware";
 
 interface IAuthStore {
   authenticated: boolean;
@@ -11,7 +13,7 @@ interface IAuthStore {
   verifyCode: (code: string, isSignIn: boolean) => Promise<boolean>;
 }
 
-const useAuthStore = create<IAuthStore>((set) => ({
+const AuthStore: StateCreator<IAuthStore> = (set) => ({
   authenticated: false,
   signUp: async (phone: string) => {
     console.log(phone);
@@ -44,7 +46,14 @@ const useAuthStore = create<IAuthStore>((set) => ({
     set({ authenticated: true });
     return true;
   },
-}));
+});
+
+const useAuthStore = create<IAuthStore>()(
+  persist(AuthStore, {
+    name: "secure-auth-storage",
+    storage: createJSONStorage(() => ZustandSecureStorage),
+  })
+);
 
 function useAuthStoreShallow<T>(selector: (s: IAuthStore) => T) {
   return useAuthStore<T>(useShallow(selector));
