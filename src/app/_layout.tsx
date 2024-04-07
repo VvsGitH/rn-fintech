@@ -6,6 +6,7 @@ import { Stack } from "expo-router";
 import { preventAutoHideAsync, hideAsync } from "expo-splash-screen";
 import { useEffect } from "react";
 import { View, useColorScheme } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -41,7 +42,9 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <View style={defaultStyles.appContainer}>{loaded && <RootLayoutNav />}</View>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <View style={defaultStyles.appContainer}>{loaded && <RootLayoutNav />}</View>
+      </GestureHandlerRootView>
     </ThemeProvider>
   );
 }

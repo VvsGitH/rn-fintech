@@ -1,3 +1,4 @@
+import WidgetList from "@/components/DraggableList/WidgetList";
 import { Dropdown } from "@/components/Dropdown";
 import { RoundBtn } from "@/components/RoundButton";
 import Colors from "@/constants/Colors";
@@ -73,6 +74,9 @@ export default function DashboardPage() {
           </View>
         ))}
       </View>
+
+      <Text style={defaultStyles.sectionHeader}>Widgets</Text>
+      <WidgetList />
     </ScrollView>
   );
 }
