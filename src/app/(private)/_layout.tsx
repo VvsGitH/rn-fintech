@@ -1,4 +1,3 @@
-import Colors from "@/constants/Colors";
 import { useAuthStore } from "@/store/AuthStore";
 import { Redirect, Stack } from "expo-router";
 
@@ -11,13 +10,9 @@ export default function PublicLayout() {
   return (
     <Stack>
       <Stack.Screen
-        name="dashboard"
+        name="(tabs)"
         options={{
-          title: "Dashboard",
-          headerBackVisible: false,
-          headerStyle: { backgroundColor: Colors.background },
-          headerTitleStyle: { color: Colors.text },
-          headerShadowVisible: false,
+          headerShown: false,
         }}
       />
     </Stack>
