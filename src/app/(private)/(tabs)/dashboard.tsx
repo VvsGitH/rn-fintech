@@ -1,6 +1,6 @@
-import WidgetList from "@/components/DraggableList/WidgetList";
 import { Dropdown } from "@/components/Dropdown";
 import { RoundBtn } from "@/components/RoundButton";
+import WidgetList from "@/components/dashboard/WidgetList";
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
 import { useBalanceStore } from "@/store/BalanceStore";

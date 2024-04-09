@@ -2,20 +2,22 @@ import React, { ReactElement } from "react";
 import Animated, { useAnimatedRef, useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
 
 import Item from "./Item";
-import { COL, Positions, SIZE } from "./Config";
+import { COL, SIZE } from "./constants";
+import { Positions } from "./types";
 
 interface ListProps {
   children: ReactElement<{ id: string }>[];
-  editing: boolean;
   onDragEnd: (diff: Positions) => void;
 }
 
-const List = ({ children, editing, onDragEnd }: ListProps) => {
-  const scrollY = useSharedValue(0);
+export default function List({ children, onDragEnd }: ListProps) {
   const scrollView = useAnimatedRef<Animated.ScrollView>();
+
+  const scrollY = useSharedValue(0);
   const positions = useSharedValue<Positions>(
     children.reduce<Positions>((obj, child, index) => ((obj[child.props.id] = index), obj), {})
   );
+
   const onScroll = useAnimatedScrollHandler({
     onScroll: ({ contentOffset: { y } }) => {
       scrollY.value = y;
@@ -38,7 +40,6 @@ const List = ({ children, editing, onDragEnd }: ListProps) => {
           key={child.props.id}
           positions={positions}
           id={child.props.id}
-          editing={editing}
           onDragEnd={onDragEnd}
           scrollView={scrollView}
           scrollY={scrollY}
@@ -48,6 +49,4 @@ const List = ({ children, editing, onDragEnd }: ListProps) => {
       ))}
     </Animated.ScrollView>
   );
-};
-
-export default List;
+}
