@@ -1,12 +1,18 @@
 import Colors from "@/constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { BlurView } from "expo-blur";
+import { StyleSheet } from "react-native";
 
 export default function PrivateTabsLayout() {
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors.text,
+        tabBarStyle: styles.tabBar,
+        tabBarBackground: () => (
+          <BlurView intensity={100} style={styles.tabBarBlur} experimentalBlurMethod="dimezisBlurView" />
+        ),
       }}
     >
       <Tabs.Screen
@@ -47,3 +53,18 @@ export default function PrivateTabsLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    backgroundColor: "transparent",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    elevation: 0,
+  },
+  tabBarBlur: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.05)",
+  },
+});
