@@ -6,10 +6,12 @@ import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
 import { useBalanceStore } from "@/store/BalanceStore";
 import { Ionicons } from "@expo/vector-icons";
+import { useHeaderHeight } from "@react-navigation/elements";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function DashboardPage() {
+  const headerHeight = useHeaderHeight();
   const balanceStore = useBalanceStore();
 
   const onAddMoney = () => {
@@ -26,7 +28,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: Colors.background }}>
+    <ScrollView style={{ backgroundColor: Colors.background }} contentContainerStyle={{ paddingTop: headerHeight }}>
       <StatusBar style="dark" />
 
       <View style={styles.account}>

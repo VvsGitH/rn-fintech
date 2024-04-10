@@ -3,6 +3,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { BlurView } from "expo-blur";
 import { StyleSheet } from "react-native";
+import { CustomHeader } from "@/components/CustomHeader";
 
 export default function PrivateTabsLayout() {
   return (
@@ -11,7 +12,12 @@ export default function PrivateTabsLayout() {
         tabBarActiveTintColor: Colors.text,
         tabBarStyle: styles.tabBar,
         tabBarBackground: () => (
-          <BlurView intensity={100} style={styles.tabBarBlur} experimentalBlurMethod="dimezisBlurView" />
+          <BlurView
+            intensity={100}
+            tint="extraLight"
+            style={styles.tabBarBlur}
+            experimentalBlurMethod="dimezisBlurView"
+          />
         ),
       }}
     >
@@ -20,6 +26,8 @@ export default function PrivateTabsLayout() {
         options={{
           title: "Dashboard",
           tabBarIcon: ({ size, color }) => <FontAwesome name="registered" size={size} color={color} />,
+          header: () => <CustomHeader />,
+          headerTransparent: true,
         }}
       />
       <Tabs.Screen
@@ -27,6 +35,8 @@ export default function PrivateTabsLayout() {
         options={{
           title: "Invest",
           tabBarIcon: ({ size, color }) => <FontAwesome name="line-chart" size={size} color={color} />,
+          header: () => <CustomHeader />,
+          headerTransparent: true,
         }}
       />
       <Tabs.Screen
@@ -34,6 +44,8 @@ export default function PrivateTabsLayout() {
         options={{
           title: "Transfers",
           tabBarIcon: ({ size, color }) => <FontAwesome name="exchange" size={size} color={color} />,
+          header: () => <CustomHeader />,
+          headerTransparent: true,
         }}
       />
       <Tabs.Screen
@@ -41,6 +53,8 @@ export default function PrivateTabsLayout() {
         options={{
           title: "Crypto",
           tabBarIcon: ({ size, color }) => <FontAwesome name="bitcoin" size={size} color={color} />,
+          header: () => <CustomHeader />,
+          headerTransparent: true,
         }}
       />
       <Tabs.Screen
@@ -48,6 +62,8 @@ export default function PrivateTabsLayout() {
         options={{
           title: "Lifestyle",
           tabBarIcon: ({ size, color }) => <FontAwesome name="th" size={size} color={color} />,
+          header: () => <CustomHeader />,
+          headerTransparent: true,
         }}
       />
     </Tabs>
