@@ -1,60 +1,42 @@
 import React, { ReactNode } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useAnimatedReaction,
   withSpring,
-  scrollTo,
   withTiming,
   useSharedValue,
   runOnJS,
   SharedValue,
-  AnimatedRef,
   Easing,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { COL, SIZE } from "./constants";
 import { Positions } from "./types";
+import { useScrollContext } from "../ScrollView";
 
 interface ItemProps {
   children: ReactNode;
   positions: SharedValue<Positions>;
   id: string;
   onDragEnd: (diffs: Positions) => void;
-  scrollView: AnimatedRef<Animated.ScrollView>;
-  scrollY: SharedValue<number>;
 }
 
-export default function Item({ children, positions, id, onDragEnd, scrollView, scrollY }: ItemProps) {
-  const inset = useSafeAreaInsets();
-  const containerHeight = Dimensions.get("window").height - inset.top - inset.bottom;
-  const contentHeight = (Object.keys(positions.value).length / COL) * SIZE;
-
+export default function Item({ children, positions, id, onDragEnd }: ItemProps) {
+  const { scrollY, maxScrollY, scrollTo } = useScrollContext();
   const isGestureActive = useSharedValue(false);
 
   const position = getPosition(positions.value[id]);
   const translateX = useSharedValue(position.x);
   const translateY = useSharedValue(position.y);
 
-  useAnimatedReaction(
-    () => positions.value[id],
-    (newOrder) => {
-      if (!isGestureActive.value) {
-        const pos = getPosition(newOrder);
-        translateX.value = withTiming(pos.x, animationConfig);
-        translateY.value = withTiming(pos.y, animationConfig);
-      }
-    }
-  );
-
   const panGesture = Gesture.Pan()
     .onStart(() => {
       isGestureActive.value = true;
     })
-    .onChange(({ changeX, changeY }) => {
-      translateX.value += changeX;
-      translateY.value += changeY;
+    .onChange((e) => {
+      translateX.value += e.changeX;
+      translateY.value += e.changeY;
       // 1. We calculate where the tile should be
       const newOrder = getOrder(translateX.value, translateY.value, Object.keys(positions.value).length - 1);
       // 2. We swap the positions
@@ -67,31 +49,39 @@ export default function Item({ children, positions, id, onDragEnd, scrollView, s
         }
       }
       // 3. Scroll up and down if necessary
-      const lowerBound = scrollY.value;
-      const upperBound = lowerBound + containerHeight - SIZE;
-      const maxScroll = contentHeight - containerHeight;
-      const leftToScrollDown = maxScroll - scrollY.value;
-      if (translateY.value < lowerBound) {
-        const diff = Math.min(lowerBound - translateY.value, lowerBound);
-        scrollY.value -= diff;
-        scrollTo(scrollView, 0, scrollY.value, false);
-        translateY.value = translateY.value - diff + changeY;
+      if (e.absoluteY < 150 && scrollY!.value > 0) {
+        const diff = 10;
+        scrollTo!(scrollY!.value - diff);
+        translateY.value -= diff;
       }
-      if (translateY.value > upperBound) {
-        const diff = Math.min(translateY.value - upperBound, leftToScrollDown);
-        scrollY.value += diff;
-        scrollTo(scrollView, 0, scrollY.value, false);
-        translateY.value = translateY.value - diff + changeY;
+      if (e.absoluteY > maxScrollY!.value + 70 && scrollY!.value < maxScrollY!.value) {
+        const diff = 10;
+        scrollTo!(scrollY!.value + diff);
+        translateY.value += diff;
       }
     })
     .onEnd(() => {
+      // Re-allign the current item with the grid when it's released
       const newPosition = getPosition(positions.value[id]);
-      translateX.value = withTiming(newPosition.x, animationConfig, () => {
-        isGestureActive.value = false;
-        runOnJS(onDragEnd)(positions.value);
-      });
+      translateX.value = withTiming(newPosition.x, animationConfig);
       translateY.value = withTiming(newPosition.y, animationConfig);
+    })
+    .onFinalize(() => {
+      isGestureActive.value = false;
+      runOnJS(onDragEnd)(positions.value);
     });
+
+  // Re-allign the item with the grid when it's position in the array changes, even if it's not the touched one
+  useAnimatedReaction(
+    () => positions.value[id],
+    (newOrder) => {
+      if (!isGestureActive.value) {
+        const pos = getPosition(newOrder);
+        translateX.value = withTiming(pos.x, animationConfig);
+        translateY.value = withTiming(pos.y, animationConfig);
+      }
+    }
+  );
 
   const style = useAnimatedStyle(() => {
     const zIndex = isGestureActive.value ? 100 : 0;

@@ -1,11 +1,13 @@
 import { Dropdown } from "@/components/Dropdown";
 import { RoundBtn } from "@/components/RoundButton";
+import { ScrollView } from "@/components/ScrollView";
 import WidgetList from "@/components/dashboard/WidgetList";
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
 import { useBalanceStore } from "@/store/BalanceStore";
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function DashboardPage() {
   const balanceStore = useBalanceStore();
@@ -25,6 +27,8 @@ export default function DashboardPage() {
 
   return (
     <ScrollView style={{ backgroundColor: Colors.background }}>
+      <StatusBar style="dark" />
+
       <View style={styles.account}>
         <View style={styles.row}>
           <Text style={styles.balance}>{balanceStore.balance}</Text>
