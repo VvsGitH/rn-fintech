@@ -1,6 +1,7 @@
 import { defaultStyles } from "@/constants/Styles";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { preventAutoHideAsync, hideAsync } from "expo-splash-screen";
@@ -17,6 +18,9 @@ export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: "index",
 };
+
+// Init @tanstack query client
+const client = new QueryClient();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 void preventAutoHideAsync();
@@ -41,11 +45,13 @@ export default function RootLayout() {
   }, [loaded]);
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <View style={defaultStyles.appContainer}>{loaded && <RootLayoutNav />}</View>
-      </GestureHandlerRootView>
-    </ThemeProvider>
+    <QueryClientProvider client={client}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <View style={defaultStyles.appContainer}>{loaded && <RootLayoutNav />}</View>
+        </GestureHandlerRootView>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
